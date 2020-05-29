@@ -1,0 +1,11 @@
+<mapper namespace="com.yujia.mapper.UserMapper">
+
+    <select id="select" paramterType="com.yujia.pojo.User" resultType="com.yujia.pojo.User">
+        select * from user where username = #{username} and password = #{password}
+    </select>
+
+    <select id="selectList" resultType="com.yujia.pojo.User">
+        select * from user
+    </select>
+
+</mapper>
