@@ -33,6 +33,21 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <T> List<T> selectList(String mappedStatementId, Object... params) throws Exception {
-        return (List<T>) excutor.query(configuration, configuration.getMappedStatementMap().get(mappedStatementId), params);
+        return (List<T>) excutor.executeQuery(configuration, configuration.getMappedStatementMap().get(mappedStatementId), params);
+    }
+
+    @Override
+    public int insert(String mappedStatementId, Object... params) throws Exception {
+        return excutor.executeUpdate(configuration, configuration.getMappedStatementMap().get(mappedStatementId), params);
+    }
+
+    @Override
+    public int delete(String mappedStatementId, Object... params) throws Exception {
+        return excutor.executeUpdate(configuration, configuration.getMappedStatementMap().get(mappedStatementId), params);
+    }
+
+    @Override
+    public int update(String mappedStatementId, Object... params) throws Exception {
+        return excutor.executeUpdate(configuration, configuration.getMappedStatementMap().get(mappedStatementId), params);
     }
 }

@@ -22,26 +22,31 @@ public class XMLMapperBuilder {
             // 根节点
             Element rootElement = read.getRootElement();
             String namespace = rootElement.attributeValue("namespace");
-
-            String id, sql;
-            Class<?> paramterClass, resultClass;
-            MappedStatement mappedStatement;
-            //  select语句
-            List<Element> list = rootElement.selectNodes("//select");
-            for (Element element : list) {
-                id = namespace.concat(".").concat(element.attributeValue("id"));
-                sql = element.getTextTrim();
-                paramterClass = getClassType(element.attributeValue("paramterType"));
-                resultClass = getClassType(element.attributeValue("resultType"));
-                mappedStatement = new MappedStatement();
-                mappedStatement.setId(id);
-                mappedStatement.setSql(sql);
-                mappedStatement.setParamterClass(paramterClass);
-                mappedStatement.setResultClass(resultClass);
-                configuration.getMappedStatementMap().put(id, mappedStatement);
-            }
+            parseElement(namespace, rootElement.selectNodes("//select"));
+            parseElement(namespace, rootElement.selectNodes("//insert"));
+            parseElement(namespace, rootElement.selectNodes("//delete"));
+            parseElement(namespace, rootElement.selectNodes("//update"));
         } catch (DocumentException | ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void parseElement(String namespace, List<Element> list) throws ClassNotFoundException {
+        String id, sql;
+        Class<?> paramterClass, resultClass;
+        MappedStatement mappedStatement;
+        //  select|insert|delete|update语句
+        for (Element element : list) {
+            id = namespace.concat(".").concat(element.attributeValue("id"));
+            sql = element.getTextTrim();
+            paramterClass = getClassType(element.attributeValue("parameterType"));
+            resultClass = getClassType(element.attributeValue("resultType"));
+            mappedStatement = new MappedStatement();
+            mappedStatement.setId(id);
+            mappedStatement.setSql(sql);
+            mappedStatement.setParamterClass(paramterClass);
+            mappedStatement.setResultClass(resultClass);
+            configuration.getMappedStatementMap().put(id, mappedStatement);
         }
     }
 

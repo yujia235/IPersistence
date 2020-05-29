@@ -1,11 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yujia.mapper.UserMapper">
 
-    <select id="select" paramterType="com.yujia.pojo.User" resultType="com.yujia.pojo.User">
-        select * from user where username = #{username} and password = #{password}
+    <select id="select" parameterType="com.yujia.pojo.User" resultType="com.yujia.pojo.User">
+        select * from `user` where username = #{username} and password = #{password}
     </select>
 
     <select id="selectList" resultType="com.yujia.pojo.User">
-        select * from user
+        select * from `user`
     </select>
+
+    <insert id="insert" parameterType="com.yujia.pojo.User">
+        insert into `user` (`id`,`username`,`password`,`birthday`) VALUES (#{id},#{username},#{password},#{birthday})
+    </insert>
+
+    <delete id="delete" parameterType="com.yujia.pojo.User">
+        delete from `user` where `username` = #{username} and  `password` = #{password}
+    </delete>
+
+    <update id="update" parameterType="com.yujia.pojo.User">
+        update `user` set `username` = #{username}, `password` = #{password}, `birthday` = #{birthday}
+        where `id` = #{id}
+    </update>
 
 </mapper>
